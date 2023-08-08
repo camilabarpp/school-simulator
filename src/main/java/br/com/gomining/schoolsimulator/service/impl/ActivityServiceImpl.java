@@ -18,40 +18,40 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<Activity> getAllActivities() {
-        return this.activityRepository.findAll();
+        return activityRepository.findAll();
     }
 
     @Override
     public Activity getActivityById(String id) {
-        return this.activityRepository.findById(id)
+        return activityRepository.findById(id)
                 .orElseThrow(() -> new ApiNotFoundException("Atividade não encontrada com o ID: " + id));
     }
 
     @Override
     public Activity createActivity(Activity activity) {
-        return this.activityRepository.save(activity);
+        return activityRepository.save(activity);
     }
 
     @Override
     public Activity updateActivity(String id, Activity updatedActivity) {
-        Optional<Activity> activityOptional = activityRepository.findById(id);
-        Activity existingActivity = activityOptional
+        return activityRepository.findById(id)
+                .map(activity -> {
+                    activity.setTitle(updatedActivity.getTitle());
+                    activity.setDescription(updatedActivity.getDescription());
+                    activity.setRegistrationDate(updatedActivity.getRegistrationDate());
+                    activity.setLastUpdateDate(updatedActivity.getLastUpdateDate());
+                    return activityRepository.save(activity);
+                })
                 .orElseThrow(() -> new ApiNotFoundException("Atividade não encontrada com o ID: " + id));
-
-        existingActivity.setTitle(updatedActivity.getTitle());
-        existingActivity.setDescription(updatedActivity.getDescription());
-        existingActivity.setRegistrationDate(updatedActivity.getRegistrationDate());
-        existingActivity.setLastUpdateDate(updatedActivity.getLastUpdateDate());
-
-        return activityRepository.save(existingActivity);
     }
 
     @Override
     public void deleteActivity(String id) {
-        Optional<Activity> activityOptional = activityRepository.findById(id);
-        Activity existingActivity = activityOptional
+        activityRepository.findById(id)
+                .map(activity -> {
+                    activityRepository.delete(activity);
+                    return Void.TYPE;
+                })
                 .orElseThrow(() -> new ApiNotFoundException("Atividade não encontrada com o ID: " + id));
-
-        activityRepository.delete(existingActivity);
     }
 }

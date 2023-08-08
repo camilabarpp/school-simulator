@@ -2,14 +2,16 @@ package br.com.gomining.schoolsimulator.controller;
 
 import br.com.gomining.schoolsimulator.model.request.ActivityRequest;
 import br.com.gomining.schoolsimulator.model.response.ActivityResponse;
-import br.com.gomining.schoolsimulator.service.ActivityService;
 import br.com.gomining.schoolsimulator.service.impl.ActivityServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static br.com.gomining.schoolsimulator.model.mapper.ActivityMapper.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/activities")
@@ -19,26 +21,28 @@ public class ActivityController {
 
     @GetMapping
     public List<ActivityResponse> getAllActivities() {
-        return toListResponse(this.activityService.getAllActivities());
+        return toListResponse(activityService.getAllActivities());
     }
 
     @GetMapping("/{id}")
     public ActivityResponse getActivityById(@PathVariable String id) {
-        return toResponse(this.activityService.getActivityById(id));
+        return toResponse(activityService.getActivityById(id));
     }
 
     @PostMapping
-    public ActivityResponse createActivity(@RequestBody ActivityRequest activity) {
-        return toResponse(this.activityService.createActivity(toEntity(activity)));
+    @ResponseStatus(CREATED)
+    public ActivityResponse createActivity(@RequestBody @Valid ActivityRequest activity) {
+        return toResponse(activityService.createActivity(toEntity(activity)));
     }
 
     @PutMapping("/{id}")
-    public ActivityResponse updateActivity(@PathVariable String id, @RequestBody ActivityRequest activity) {
-        return toResponse(this.activityService.updateActivity(id, toEntity(activity)));
+    public ActivityResponse updateActivity(@PathVariable String id, @RequestBody @Valid ActivityRequest activity) {
+        return toResponse(activityService.updateActivity(id, toEntity(activity)));
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(NO_CONTENT)
     public void deleteActivity(@PathVariable String id) {
-        this.activityService.deleteActivity(id);
+        activityService.deleteActivity(id);
     }
 }
