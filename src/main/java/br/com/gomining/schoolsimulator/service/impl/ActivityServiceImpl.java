@@ -7,6 +7,7 @@ import br.com.gomining.schoolsimulator.service.ActivityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Activity createActivity(Activity activity) {
+        activity.setRegistrationDate(String.valueOf(LocalDate.now()));
         return activityRepository.save(activity);
     }
 
@@ -38,8 +40,7 @@ public class ActivityServiceImpl implements ActivityService {
                 .map(activity -> {
                     activity.setTitle(updatedActivity.getTitle());
                     activity.setDescription(updatedActivity.getDescription());
-                    activity.setRegistrationDate(updatedActivity.getRegistrationDate());
-                    activity.setLastUpdateDate(updatedActivity.getLastUpdateDate());
+                    activity.setLastUpdateDate(String.valueOf(LocalDate.now()));
                     return activityRepository.save(activity);
                 })
                 .orElseThrow(() -> new ApiNotFoundException("Atividade não encontrada com o ID: " + id));
