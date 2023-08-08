@@ -8,9 +8,9 @@ import java.util.List;
 
 @Repository
 public interface GradeRepository extends MongoRepository<Grade, String> {
-    List<Grade> getAllGradesForStudentInActivity(String studentId, String activityId);
-
-    List<Grade> getAllGradesForStudent(String studentId);
-
-    List<Grade> getAllGradesForActivity(String activityId);
+//    List<Grade> getAllGradesForStudentInActivity(String studentId, String activityId);
+//
+//    List<Grade> getAllGradesForStudent(String studentId);
+//
+//    List<Grade> getAllGradesForActivity(String activityId);
 }

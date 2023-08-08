@@ -1,9 +1,7 @@
 package br.com.gomining.schoolsimulator.service.impl;
 
 import br.com.gomining.schoolsimulator.common.Exception.ApiNotFoundException;
-import br.com.gomining.schoolsimulator.model.entity.Grade;
 import br.com.gomining.schoolsimulator.model.entity.Student;
-import br.com.gomining.schoolsimulator.repository.GradeRepository;
 import br.com.gomining.schoolsimulator.repository.StudentRepository;
 import br.com.gomining.schoolsimulator.service.StudentService;
 import lombok.AllArgsConstructor;
@@ -18,9 +16,6 @@ public class StudentServiceImpl implements StudentService {
 
     private StudentRepository studentRepository;
 
-    private GradeRepository gradeRepository;
-
-
     @Override
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
@@ -28,8 +23,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getStudentById(String id) {
-        Optional<Student> optionalStudent = studentRepository.findById(id);
-        return optionalStudent.orElseThrow(
+        return studentRepository.findById(id).orElseThrow(
                 () -> new ApiNotFoundException("Estudante não encontrado com o ID: " + id));
     }
 

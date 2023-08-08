@@ -5,16 +5,20 @@ import br.com.gomining.schoolsimulator.model.entity.Grade;
 import br.com.gomining.schoolsimulator.repository.GradeRepository;
 import br.com.gomining.schoolsimulator.service.GradeService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class GradeServiceImpl implements GradeService {
-    private GradeRepository gradeRepository;
 
+    private final GradeRepository gradeRepository;
+
+    @Autowired
+    public GradeServiceImpl(GradeRepository gradeRepository) {
+        this.gradeRepository = gradeRepository;
+    }
     @Override
     public List<Grade> getAllGrades() {
         return this.gradeRepository.findAll();
@@ -22,8 +26,7 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public Grade getGradeById(String id) {
-        Optional<Grade> grade = this.gradeRepository.findById(id);
-        return grade.orElseThrow(() -> new ApiNotFoundException("Nota não encontrada com o ID: " + id));
+        return this.gradeRepository.findById(id).orElseThrow(() -> new ApiNotFoundException("Nota não encontrada com o ID: " + id));
     }
 
     @Override
@@ -45,35 +48,39 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public void deleteGrade(String id) {
-        Grade existingGrade = gradeRepository.findById(id)
+        Grade existingGrade = this.gradeRepository.findById(id)
                 .orElseThrow(() -> new ApiNotFoundException("Nota não encontrada com o ID: " + id));
 
-        gradeRepository.delete(existingGrade);
+        this.gradeRepository.delete(existingGrade);
     }
 
     @Override
     public double getAverageGradeForStudentInActivity(String studentId, String activityId) {
-        List<Grade> grades = gradeRepository.getAllGradesForStudentInActivity(studentId, activityId);
-        double sumGrades = grades.stream().mapToDouble(Grade::getGradeValue).sum();
-        return grades.isEmpty() ? 0 : sumGrades / grades.size();
+//        List<Grade> grades = this.gradeRepository.getAllGradesForStudentInActivity(studentId, activityId);
+//        double sumGrades = grades.stream().mapToDouble(Grade::getGradeValue).sum();
+//        return grades.isEmpty() ? 0 : sumGrades / grades.size();
+        return 0;
     }
 
     @Override
     public double getAverageGradeForStudent(String studentId) {
-        List<Grade> grades = gradeRepository.getAllGradesForStudent(studentId);
-        double sumGrades = grades.stream().mapToDouble(Grade::getGradeValue).sum();
-        return grades.isEmpty() ? 0 : sumGrades / grades.size();
+//        List<Grade> grades = this.gradeRepository.getAllGradesForStudent(studentId);
+//        double sumGrades = grades.stream().mapToDouble(Grade::getGradeValue).sum();
+//        return grades.isEmpty() ? 0 : sumGrades / grades.size();
+        return 0;
     }
 
     @Override
     public double getAverageGradeForActivity(String activityId) {
-        List<Grade> grades = gradeRepository.getAllGradesForActivity(activityId);
-        double sumGrades = grades.stream().mapToDouble(Grade::getGradeValue).sum();
-        return grades.isEmpty() ? 0 : sumGrades / grades.size();
+//        List<Grade> grades = this.gradeRepository.getAllGradesForActivity(activityId);
+//        double sumGrades = grades.stream().mapToDouble(Grade::getGradeValue).sum();
+//        return grades.isEmpty() ? 0 : sumGrades / grades.size();
+        return 0;
     }
 
     @Override
     public List<Grade> getAllGradesForStudent(String studentId) {
-        return gradeRepository.getAllGradesForStudent(studentId);
+//        return this.gradeRepository.getAllGradesForStudent(studentId);
+        return null;
     }
 }
