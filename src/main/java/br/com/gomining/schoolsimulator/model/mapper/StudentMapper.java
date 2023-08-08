@@ -5,6 +5,9 @@ import br.com.gomining.schoolsimulator.model.request.StudentRequest;
 import br.com.gomining.schoolsimulator.model.response.StudentResponse;
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @UtilityClass
 public class StudentMapper {
     public static Student toEntity(StudentRequest studentRequest) {
@@ -28,5 +31,11 @@ public class StudentMapper {
                 .registrationDate(student.getRegistrationDate())
                 .lastUpdateDate(student.getLastUpdateDate())
                 .build();
+    }
+
+    public static List<StudentResponse> toListResponse(List<Student> students) {
+        return students.stream()
+                .map(StudentMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }

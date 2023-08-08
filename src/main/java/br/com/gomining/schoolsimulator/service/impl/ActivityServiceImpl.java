@@ -39,7 +39,7 @@ public class ActivityServiceImpl implements ActivityService {
                 .map(activity -> {
                     activity.setTitle(updatedActivity.getTitle());
                     activity.setQuestionStatement(updatedActivity.getQuestionStatement());
-                    activity.setLastUpdateDate(String.valueOf(LocalDate.now()));
+                    activity.setLastUpdateDate(LocalDate.now().toString());
                     return activityRepository.save(activity);
                 })
                 .orElseThrow(() -> new ApiNotFoundException("Atividade não encontrada com o ID: " + id));

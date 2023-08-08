@@ -33,5 +33,6 @@ public class Student {
     private String registrationDate;
     @ApiModelProperty(notes = "The student last update date")
     private String lastUpdateDate;
+    @ApiModelProperty(notes = "The student activities")
     private List<Activity> activities;
 }
