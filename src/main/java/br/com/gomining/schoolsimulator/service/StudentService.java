@@ -15,6 +15,8 @@ public interface StudentService {
 
     Student addActivity(String studentId, String activityId);
     Student addGrade(String studentId, String activityId, Grade grade);
+    Double calculateStudentAverageBasedOnAllActivity(String studentId);
+
 //    double calcularMediaGeralAtividade(String estudanteId, String atividadeId);
 //    double calcularMediaGeralEstudante(String estudanteId);
 //    List<Grade> listarNotasEstudante(String estudanteId);

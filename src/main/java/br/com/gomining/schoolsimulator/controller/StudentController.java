@@ -1,7 +1,5 @@
 package br.com.gomining.schoolsimulator.controller;
 
-import br.com.gomining.schoolsimulator.model.entity.Grade;
-import br.com.gomining.schoolsimulator.model.mapper.GradeMapper;
 import br.com.gomining.schoolsimulator.model.request.StudentRequest;
 import br.com.gomining.schoolsimulator.model.response.GradeResponse;
 import br.com.gomining.schoolsimulator.model.response.StudentResponse;
@@ -64,5 +62,10 @@ public class StudentController {
     @PutMapping("/{studentId}/activity/{activityId}/grade")
     public StudentResponse addGrade(@PathVariable String studentId, @PathVariable String activityId, @RequestBody @Valid GradeResponse gradeResponse) {
         return toResponse(studentService.addGrade(studentId, activityId, responseToEntity(gradeResponse)));
+    }
+
+    @GetMapping("/{studentId}/average")
+    public Double calculateStudentAverageBasedOnAllActivity(@PathVariable String studentId) {
+        return studentService.calculateStudentAverageBasedOnAllActivity(studentId);
     }
 }

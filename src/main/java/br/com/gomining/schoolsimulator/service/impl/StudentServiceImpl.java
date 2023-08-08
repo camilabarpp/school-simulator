@@ -72,7 +72,6 @@ public class StudentServiceImpl implements StudentService {
             student.getActivities().add(activity);
             studentRepository.save(student);
         } else {
-            // Aqui você pode lançar uma exceção, retornar uma mensagem de erro, etc.
             throw new RuntimeException("Atividade já adicionada ao estudante");
         }
 
@@ -85,7 +84,6 @@ public class StudentServiceImpl implements StudentService {
 
         Grade newGrade = gradeService.createGrade(grade);
 
-        // Encontrar a atividade específica pelo activityId
         Optional<Activity> optionalActivity = student.getActivities().stream()
                 .filter(activity -> activity.getId().equals(activityId))
                 .findFirst();
@@ -93,16 +91,13 @@ public class StudentServiceImpl implements StudentService {
         if (optionalActivity.isPresent()) {
             Activity targetedActivity = optionalActivity.get();
 
-            // Obter a lista de notas da atividade específica
             List<Grade> activityGrades = targetedActivity.getGrade();
             if (activityGrades == null) {
                 activityGrades = new ArrayList<>();
             }
 
-            // Adicionar a nova nota à lista de notas da atividade
             activityGrades.add(newGrade);
 
-            // Atualizar a lista de notas da atividade
             targetedActivity.setGrade(activityGrades);
 
             studentRepository.save(student);
@@ -113,33 +108,32 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    @Override
+    public Double calculateStudentAverageBasedOnAllActivity(String studentId) {
+        Student student = this.getStudentById(studentId);
+        List<Activity> activities = student.getActivities();
 
-//    @Override
-//    public Student addGrade(String studentId, String activityId, Grade grade) {
-//        var student = this.getStudentById(studentId);
-//
-//        Grade newGrade = gradeService.createGrade(grade);
-//
-//        // Encontrar a atividade específica pelo activityId
-//        Activity targetedActivity = student.getActivities().stream()
-//                .filter(activity1 -> activity1.getId().equals(activityId))
-//                .findFirst()
-//                .orElseThrow(() -> new ApiNotFoundException("Atividade não encontrada com o ID: " + activityId));
-//
-//        // Obter a lista de notas da atividade específica
-//        List<Grade> activityGrades = targetedActivity.getGrade();
-//        if (activityGrades == null) {
-//            activityGrades = new ArrayList<>();
-//        }
-//
-//        // Adicionar a nova nota à lista de notas da atividade
-//        activityGrades.add(newGrade);
-//
-//        // Atualizar a lista de notas da atividade
-//        targetedActivity.setGrade(activityGrades);
-//
-//        studentRepository.save(student);
-//
-//        return student;
-//    }
+        if (activities.isEmpty()) {
+            throw new ApiNotFoundException("O estudante não possui atividades.");
+        }
+
+        double totalGrade = activities.stream()
+                .mapToDouble(this::calculateActivityAverage)
+                .sum();
+
+        return totalGrade / activities.size();
+    }
+
+    private Double calculateActivityAverage(Activity activity) {
+        List<Grade> grades = activity.getGrade();
+        if (grades == null || grades.isEmpty()) {
+            return 0.0;
+        }
+
+        double totalGradeValue = grades.stream()
+                .mapToDouble(Grade::getGradeValue)
+                .sum();
+
+        return totalGradeValue / grades.size();
+    }
 }
