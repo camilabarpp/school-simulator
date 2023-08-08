@@ -5,6 +5,9 @@ import br.com.gomining.schoolsimulator.model.request.GradeRequest;
 import br.com.gomining.schoolsimulator.model.response.GradeResponse;
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @UtilityClass
 public class GradeMapper {
     public static Grade toEntity(GradeRequest gradeRequest) {
@@ -18,5 +21,11 @@ public class GradeMapper {
                 .id(grade.getId())
                 .gradeValue(grade.getGradeValue())
                 .build();
+    }
+
+    public static List<GradeResponse> toListResponse(List<Grade> grades) {
+        return grades.stream()
+                .map(GradeMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }

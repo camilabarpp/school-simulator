@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -28,5 +30,5 @@ public class Activity {
     @ApiModelProperty(notes = "The activity last update date")
     private String lastUpdateDate;
     @ApiModelProperty(notes = "The activity grade")
-    private Grade grade;
+    private List<Grade> grade;
 }
