@@ -8,7 +8,7 @@ import lombok.Data;
 public class ActivityResponse {
     private String id;
     private String title;
-    private String description;
+    private String questionStatement;
     private String registrationDate;
     private String lastUpdateDate;
 }

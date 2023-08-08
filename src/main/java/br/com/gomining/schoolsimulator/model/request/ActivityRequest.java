@@ -10,8 +10,8 @@ import javax.validation.constraints.NotBlank;
 public class ActivityRequest {
     @NotBlank(message = "title is mandatory")
     private String title;
-    @NotBlank(message = "description is mandatory")
-    private String description;
+    @NotBlank(message = "question statement is mandatory")
+    private String questionStatement;
     private String registrationDate;
     private String lastUpdateDate;
 }

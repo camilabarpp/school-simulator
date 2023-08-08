@@ -45,4 +45,10 @@ public class ActivityController {
     public void deleteActivity(@PathVariable String id) {
         activityService.deleteActivity(id);
     }
+
+    @DeleteMapping
+    @ResponseStatus(NO_CONTENT)
+    public void deleteAllActivities() {
+        activityService.deleteAllActivities();
+    }
 }

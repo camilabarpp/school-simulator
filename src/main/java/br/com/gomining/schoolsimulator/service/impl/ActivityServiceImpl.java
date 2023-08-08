@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -39,7 +38,7 @@ public class ActivityServiceImpl implements ActivityService {
         return activityRepository.findById(id)
                 .map(activity -> {
                     activity.setTitle(updatedActivity.getTitle());
-                    activity.setDescription(updatedActivity.getDescription());
+                    activity.setQuestionStatement(updatedActivity.getQuestionStatement());
                     activity.setLastUpdateDate(String.valueOf(LocalDate.now()));
                     return activityRepository.save(activity);
                 })
@@ -48,11 +47,14 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public void deleteActivity(String id) {
-        activityRepository.findById(id)
-                .map(activity -> {
-                    activityRepository.delete(activity);
-                    return Void.TYPE;
-                })
+        Activity activity = activityRepository.findById(id)
                 .orElseThrow(() -> new ApiNotFoundException("Atividade não encontrada com o ID: " + id));
+
+        activityRepository.delete(activity);
+    }
+
+    @Override
+    public void deleteAllActivities() {
+        activityRepository.deleteAll();
     }
 }

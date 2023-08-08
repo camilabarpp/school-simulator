@@ -13,7 +13,7 @@ public class ActivityMapper {
     public static Activity toEntity(ActivityRequest activityRequest) {
         return Activity.builder()
                 .title(activityRequest.getTitle())
-                .description(activityRequest.getDescription())
+                .questionStatement(activityRequest.getQuestionStatement())
                 .registrationDate(activityRequest.getRegistrationDate())
                 .lastUpdateDate(activityRequest.getLastUpdateDate())
                 .build();
@@ -23,7 +23,7 @@ public class ActivityMapper {
         return ActivityResponse.builder()
                 .id(activity.getId())
                 .title(activity.getTitle())
-                .description(activity.getDescription())
+                .questionStatement(activity.getQuestionStatement())
                 .registrationDate(activity.getRegistrationDate())
                 .lastUpdateDate(activity.getLastUpdateDate())
                 .build();

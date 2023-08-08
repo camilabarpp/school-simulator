@@ -21,8 +21,8 @@ public class Activity {
     private String id;
     @ApiModelProperty(notes = "The activity title")
     private String title;
-    @ApiModelProperty(notes = "The activity description")
-    private String description;
+    @ApiModelProperty(notes = "The activity question statement")
+    private String questionStatement;
     @ApiModelProperty(notes = "The activity registration date")
     private String registrationDate;
     @ApiModelProperty(notes = "The activity last update date")
