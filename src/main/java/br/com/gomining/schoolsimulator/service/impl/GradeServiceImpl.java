@@ -4,7 +4,6 @@ import br.com.gomining.schoolsimulator.common.Exception.ApiNotFoundException;
 import br.com.gomining.schoolsimulator.model.entity.Grade;
 import br.com.gomining.schoolsimulator.repository.GradeRepository;
 import br.com.gomining.schoolsimulator.service.GradeService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +37,6 @@ public class GradeServiceImpl implements GradeService {
     public Grade updateGrade(String id, Grade updatedGrade) {
         Grade existingGrade = gradeRepository.findById(id)
                 .orElseThrow(() -> new ApiNotFoundException("Nota não encontrada com o ID: " + id));
-
-        existingGrade.setStudent(updatedGrade.getStudent());
-        existingGrade.setActivity(updatedGrade.getActivity());
         existingGrade.setGradeValue(updatedGrade.getGradeValue());
 
         return gradeRepository.save(existingGrade);

@@ -17,7 +17,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Grade {
     @Id
     private String id;
-    private Student student;
-    private Activity activity;
     private Double gradeValue;
 }

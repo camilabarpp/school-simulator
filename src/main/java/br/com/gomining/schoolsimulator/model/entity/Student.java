@@ -9,6 +9,8 @@ import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import io.swagger.annotations.ApiModel;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -31,4 +33,5 @@ public class Student {
     private String registrationDate;
     @ApiModelProperty(notes = "The student last update date")
     private String lastUpdateDate;
+    private List<Activity> activities;
 }

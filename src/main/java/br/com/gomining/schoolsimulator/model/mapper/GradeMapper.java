@@ -9,8 +9,6 @@ import lombok.experimental.UtilityClass;
 public class GradeMapper {
     public static Grade toEntity(GradeRequest gradeRequest) {
         return Grade.builder()
-                .activity(gradeRequest.getActivity())
-                .student(gradeRequest.getStudent())
                 .gradeValue(gradeRequest.getGradeValue())
                 .build();
     }
@@ -18,8 +16,6 @@ public class GradeMapper {
     public static GradeResponse toResponse(Grade grade) {
         return GradeResponse.builder()
                 .id(grade.getId())
-                .student(grade.getStudent())
-                .activity(grade.getActivity())
                 .gradeValue(grade.getGradeValue())
                 .build();
     }

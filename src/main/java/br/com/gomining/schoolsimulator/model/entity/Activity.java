@@ -27,4 +27,6 @@ public class Activity {
     private String registrationDate;
     @ApiModelProperty(notes = "The activity last update date")
     private String lastUpdateDate;
+    @ApiModelProperty(notes = "The activity grade")
+    private Grade grade;
 }
