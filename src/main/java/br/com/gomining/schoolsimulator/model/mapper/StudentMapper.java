@@ -30,6 +30,7 @@ public class StudentMapper {
                 .telephone(student.getTelephone())
                 .registrationDate(student.getRegistrationDate())
                 .lastUpdateDate(student.getLastUpdateDate())
+                .activities(student.getActivities())
                 .build();
     }
 

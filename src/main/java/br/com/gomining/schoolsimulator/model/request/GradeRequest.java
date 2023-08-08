@@ -8,11 +8,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Getter
 public class GradeRequest {
-//    @NotBlank(message = "activityId is mandatory")
-    private String activityId;
-
-//    @NotBlank(message = "studentId is mandatory")
     private String studentId;
-//    @NotBlank(message = "gradeValue is mandatory")
+    @NotBlank(message = "gradeValue is mandatory")
     private Double gradeValue;
 }

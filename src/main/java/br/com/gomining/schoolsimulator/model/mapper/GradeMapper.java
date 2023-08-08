@@ -23,6 +23,13 @@ public class GradeMapper {
                 .build();
     }
 
+    public static Grade responseToEntity(GradeResponse gradeResponse) {
+        return Grade.builder()
+                .id(gradeResponse.getId())
+                .gradeValue(gradeResponse.getGradeValue())
+                .build();
+    }
+
     public static List<GradeResponse> toListResponse(List<Grade> grades) {
         return grades.stream()
                 .map(GradeMapper::toResponse)

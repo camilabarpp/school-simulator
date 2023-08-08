@@ -16,6 +16,7 @@ public class ActivityMapper {
                 .questionStatement(activityRequest.getQuestionStatement())
                 .registrationDate(activityRequest.getRegistrationDate())
                 .lastUpdateDate(activityRequest.getLastUpdateDate())
+                .grade(activityRequest.getGrade())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class ActivityMapper {
                 .questionStatement(activity.getQuestionStatement())
                 .registrationDate(activity.getRegistrationDate())
                 .lastUpdateDate(activity.getLastUpdateDate())
+//                .grade(activity.getGrade())
                 .build();
     }
 

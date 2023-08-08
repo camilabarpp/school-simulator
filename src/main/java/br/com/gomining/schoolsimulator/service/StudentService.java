@@ -12,6 +12,9 @@ public interface StudentService {
     Student updateStudent(String id, Student student);
     void deleteStudent(String id);
     void deleteAllStudents();
+
+    Student addActivity(String studentId, String activityId);
+    Student addGrade(String studentId, String activityId, Grade grade);
 //    double calcularMediaGeralAtividade(String estudanteId, String atividadeId);
 //    double calcularMediaGeralEstudante(String estudanteId);
 //    List<Grade> listarNotasEstudante(String estudanteId);

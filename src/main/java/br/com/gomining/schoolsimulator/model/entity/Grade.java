@@ -21,6 +21,4 @@ public class Grade {
     private String id;
     @ApiModelProperty(notes = "The grade value")
     private Double gradeValue;
-    private String studentId;
-    private String activityId;
 }

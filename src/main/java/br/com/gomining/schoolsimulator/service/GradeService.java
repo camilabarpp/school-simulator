@@ -1,7 +1,6 @@
 package br.com.gomining.schoolsimulator.service;
 
 import br.com.gomining.schoolsimulator.model.entity.Grade;
-import br.com.gomining.schoolsimulator.model.request.GradeRequest;
 
 import java.util.List;
 
