@@ -1,10 +1,8 @@
 package br.com.gomining.schoolsimulator.model.mapper;
 
 import br.com.gomining.schoolsimulator.model.entity.Grade;
-import br.com.gomining.schoolsimulator.model.entity.Student;
 import br.com.gomining.schoolsimulator.model.request.GradeRequest;
 import br.com.gomining.schoolsimulator.model.response.GradeResponse;
-import br.com.gomining.schoolsimulator.model.response.StudentResponse;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;

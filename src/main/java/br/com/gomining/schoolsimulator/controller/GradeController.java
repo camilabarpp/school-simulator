@@ -1,6 +1,5 @@
 package br.com.gomining.schoolsimulator.controller;
 
-import br.com.gomining.schoolsimulator.model.entity.Grade;
 import br.com.gomining.schoolsimulator.model.mapper.GradeMapper;
 import br.com.gomining.schoolsimulator.model.request.GradeRequest;
 import br.com.gomining.schoolsimulator.model.response.GradeResponse;
@@ -11,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static br.com.gomining.schoolsimulator.model.mapper.GradeMapper.*;
+import static br.com.gomining.schoolsimulator.model.mapper.GradeMapper.toEntity;
+import static br.com.gomining.schoolsimulator.model.mapper.GradeMapper.toResponse;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
