@@ -2,6 +2,7 @@ package br.com.gomining.schoolsimulator.model.mapper;
 
 import br.com.gomining.schoolsimulator.model.entity.Student;
 import br.com.gomining.schoolsimulator.model.request.StudentRequest;
+import br.com.gomining.schoolsimulator.model.response.GradeResponse;
 import br.com.gomining.schoolsimulator.model.response.StudentResponse;
 import lombok.experimental.UtilityClass;
 

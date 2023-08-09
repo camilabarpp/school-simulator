@@ -1,5 +1,6 @@
 package br.com.gomining.schoolsimulator.controller;
 
+import br.com.gomining.schoolsimulator.model.mapper.GradeMapper;
 import br.com.gomining.schoolsimulator.model.request.StudentRequest;
 import br.com.gomining.schoolsimulator.model.response.GradeResponse;
 import br.com.gomining.schoolsimulator.model.response.StudentResponse;
@@ -64,8 +65,28 @@ public class StudentController {
         return toResponse(studentService.addGrade(studentId, activityId, responseToEntity(gradeResponse)));
     }
 
+    @GetMapping("/{studentId}/activity/{activityId}/average")
+    public Double calculateStudentAverageInActivity(@PathVariable String studentId, @PathVariable String activityId) {
+        return studentService.calculateStudentAverageInActivity(studentId, activityId);
+    }
+
     @GetMapping("/{studentId}/average")
     public Double calculateStudentAverageBasedOnAllActivity(@PathVariable String studentId) {
         return studentService.calculateStudentAverageBasedOnAllActivity(studentId);
+    }
+
+    @GetMapping("/activity/{activityId}/average")
+    public Double calculateOverallAverageForActivity(@PathVariable String activityId) {
+        return studentService.calculateOverallAverageForActivity(activityId);
+    }
+
+    @GetMapping("/search")
+    public StudentResponse getStudentByCpfEmailOrPhone(@RequestParam String identifier) {
+        return toResponse(studentService.getStudentByCpfEmailOrPhone(identifier));
+    }
+
+    @GetMapping("/search/grades")
+    public List<GradeResponse> getStudentGradesByCpfEmailOrPhone(@RequestParam String identifier) {
+        return GradeMapper.toListGradeResponse(studentService.getStudentGradesByCpfEmailOrPhone(identifier));
     }
 }

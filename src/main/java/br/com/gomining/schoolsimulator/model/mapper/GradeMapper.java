@@ -1,8 +1,10 @@
 package br.com.gomining.schoolsimulator.model.mapper;
 
 import br.com.gomining.schoolsimulator.model.entity.Grade;
+import br.com.gomining.schoolsimulator.model.entity.Student;
 import br.com.gomining.schoolsimulator.model.request.GradeRequest;
 import br.com.gomining.schoolsimulator.model.response.GradeResponse;
+import br.com.gomining.schoolsimulator.model.response.StudentResponse;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
@@ -30,7 +32,7 @@ public class GradeMapper {
                 .build();
     }
 
-    public static List<GradeResponse> toListResponse(List<Grade> grades) {
+    public List<GradeResponse> toListGradeResponse(List<Grade> grades) {
         return grades.stream()
                 .map(GradeMapper::toResponse)
                 .collect(Collectors.toList());

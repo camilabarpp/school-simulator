@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -136,4 +137,88 @@ public class StudentServiceImpl implements StudentService {
 
         return totalGradeValue / grades.size();
     }
+
+    @Override
+    public Double calculateStudentAverageInActivity(String studentId, String activityId) {
+        Student student = this.getStudentById(studentId);
+        Activity activity = activityService.getActivityById(activityId);
+
+        List<Grade> grades = student.getActivities().stream()
+                .filter(studentActivity -> studentActivity.getId().equals(activity.getId()))
+                .flatMap(studentActivity -> studentActivity.getGrade().stream())
+                .collect(Collectors.toList());
+
+        if (grades.isEmpty()) {
+            throw new ApiNotFoundException("A atividade não possui notas.");
+        }
+
+        List<Grade> studentGradesInActivity = grades.stream()
+                .filter(grade -> studentHasGrade(student, grade))
+                .collect(Collectors.toList());
+
+        if (studentGradesInActivity.isEmpty()) {
+            throw new ApiNotFoundException("O estudante não possui notas nessa atividade.");
+        }
+
+        double totalGradeValue = studentGradesInActivity.stream()
+                .mapToDouble(Grade::getGradeValue)
+                .sum();
+
+        return totalGradeValue / studentGradesInActivity.size();
+    }
+
+    private boolean studentHasGrade(Student student, Grade grade) {
+        return student.getActivities().stream()
+                .flatMap(activity -> activity.getGrade().stream())
+                .anyMatch(studentGrade -> studentGrade.getId().equals(grade.getId()));
+    }
+
+    @Override
+    public Double calculateOverallAverageForActivity(String activityId) {
+        List<Student> students = getAllStudents();
+        if (students.isEmpty()) {
+            throw new ApiNotFoundException("Não há estudantes cadastrados.");
+        }
+
+        Activity activity = activityService.getActivityById(activityId);
+
+        double totalGrade = students.stream()
+                .mapToDouble(student -> calculateStudentActivityAverage(student, activity))
+                .sum();
+
+        return totalGrade / students.size();
+    }
+
+    private Double calculateStudentActivityAverage(Student student, Activity activity) {
+        List<Grade> grades = student.getActivities().stream()
+                .filter(act -> act.getId().equals(activity.getId()))
+                .flatMap(act -> act.getGrade().stream())
+                .collect(Collectors.toList());
+
+        if (grades.isEmpty()) {
+            return 0.0;
+        }
+
+        double totalGradeValue = grades.stream()
+                .mapToDouble(Grade::getGradeValue)
+                .sum();
+
+        return totalGradeValue / grades.size();
+    }
+
+    @Override
+    public Student getStudentByCpfEmailOrPhone(String identifier) {
+        return Optional.ofNullable(studentRepository.findByCpfOrEmailOrTelephone(identifier, identifier, identifier))
+                .orElseThrow(() -> new ApiNotFoundException("Estudante não encontrado com o CPF, email ou telefone: " + identifier));
+    }
+
+    @Override
+    public List<Grade> getStudentGradesByCpfEmailOrPhone(String identifier) {
+        Student student = getStudentByCpfEmailOrPhone(identifier);
+
+        return student.getActivities().stream()
+                .flatMap(activity -> activity.getGrade().stream())
+                .collect(Collectors.toList());
+    }
+
 }

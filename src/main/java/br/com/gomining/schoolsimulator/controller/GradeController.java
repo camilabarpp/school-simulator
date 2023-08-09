@@ -1,6 +1,7 @@
 package br.com.gomining.schoolsimulator.controller;
 
 import br.com.gomining.schoolsimulator.model.entity.Grade;
+import br.com.gomining.schoolsimulator.model.mapper.GradeMapper;
 import br.com.gomining.schoolsimulator.model.request.GradeRequest;
 import br.com.gomining.schoolsimulator.model.response.GradeResponse;
 import br.com.gomining.schoolsimulator.service.impl.GradeServiceImpl;
@@ -21,7 +22,7 @@ public class GradeController {
 
     @GetMapping
     public List<GradeResponse> getAllGrades() {
-        return toListResponse(gradeService.getAllGrades());
+        return GradeMapper.toListGradeResponse(gradeService.getAllGrades());
     }
 
     @GetMapping("/{id}")
