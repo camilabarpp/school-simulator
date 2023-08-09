@@ -1,4 +1,4 @@
-package br.com.gomining.schoolsimulator.common.Exception.errorresponse;
+package br.com.gomining.schoolsimulator.common.exception.errorresponse;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;

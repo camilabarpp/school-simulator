@@ -1,6 +1,8 @@
 package br.com.gomining.schoolsimulator.service.impl;
 
-import br.com.gomining.schoolsimulator.common.Exception.ApiNotFoundException;
+import br.com.gomining.schoolsimulator.common.exception.ActivityAlreadyAddedException;
+import br.com.gomining.schoolsimulator.common.exception.ApiNotFoundException;
+import br.com.gomining.schoolsimulator.common.exception.util.ErrorMessage;
 import br.com.gomining.schoolsimulator.model.entity.Activity;
 import br.com.gomining.schoolsimulator.model.entity.Grade;
 import br.com.gomining.schoolsimulator.model.entity.Student;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static br.com.gomining.schoolsimulator.common.exception.util.ErrorMessage.*;
 
 @Service
 @AllArgsConstructor
@@ -31,7 +35,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudentById(String id) {
         return studentRepository.findById(id).orElseThrow(
-                () -> new ApiNotFoundException("Estudante não encontrado com o ID: " + id));
+                () -> new ApiNotFoundException(STUDENT_NOT_FOUND_BY_ID + id));
     }
 
     @Override
@@ -49,13 +53,13 @@ public class StudentServiceImpl implements StudentService {
             studentFound.setTelephone(student.getTelephone());
             studentFound.setLastUpdateDate(LocalDate.now().toString());
             return studentRepository.save(studentFound);
-        }).orElseThrow(() -> new ApiNotFoundException("Estudante não encontrado com o ID: " + id));
+        }).orElseThrow(() -> new ApiNotFoundException(STUDENT_NOT_FOUND_BY_ID + id));
     }
 
     @Override
     public void deleteStudent(String id) {
         Student student = studentRepository.findById(id).orElseThrow(
-                () -> new ApiNotFoundException("Estudante não encontrado com o ID: " + id));
+                () -> new ApiNotFoundException(STUDENT_NOT_FOUND_BY_ID + id));
         studentRepository.delete(student);
     }
 
@@ -73,7 +77,7 @@ public class StudentServiceImpl implements StudentService {
             student.getActivities().add(activity);
             studentRepository.save(student);
         } else {
-            throw new RuntimeException("Atividade já adicionada ao estudante");
+            throw new ActivityAlreadyAddedException(ACTIVITY_ALREADY_ADDED);
         }
 
         return student;
@@ -105,7 +109,7 @@ public class StudentServiceImpl implements StudentService {
 
             return student;
         } else {
-            throw new ApiNotFoundException("Atividade não encontrada com o ID: " + activityId);
+            throw new ApiNotFoundException(ErrorMessage.ACTIVITY_NOT_FUND_WITH_ID + activityId);
         }
     }
 
@@ -115,7 +119,7 @@ public class StudentServiceImpl implements StudentService {
         List<Activity> activities = student.getActivities();
 
         if (activities.isEmpty()) {
-            throw new ApiNotFoundException("O estudante não possui atividades.");
+            throw new ApiNotFoundException(STUDENT_WITHOUT_ACTIVITIES);
         }
 
         double totalGrade = activities.stream()
@@ -149,7 +153,7 @@ public class StudentServiceImpl implements StudentService {
                 .collect(Collectors.toList());
 
         if (grades.isEmpty()) {
-            throw new ApiNotFoundException("A atividade não possui notas.");
+            throw new ApiNotFoundException(ACTIVITY_WITHOUT_GRADES);
         }
 
         List<Grade> studentGradesInActivity = grades.stream()
@@ -157,7 +161,7 @@ public class StudentServiceImpl implements StudentService {
                 .collect(Collectors.toList());
 
         if (studentGradesInActivity.isEmpty()) {
-            throw new ApiNotFoundException("O estudante não possui notas nessa atividade.");
+            throw new ApiNotFoundException(STUDENT_WITHOUT_GRADES_IN_ACTIVITY);
         }
 
         double totalGradeValue = studentGradesInActivity.stream()
@@ -177,7 +181,7 @@ public class StudentServiceImpl implements StudentService {
     public Double calculateOverallAverageForActivity(String activityId) {
         List<Student> students = getAllStudents();
         if (students.isEmpty()) {
-            throw new ApiNotFoundException("Não há estudantes cadastrados.");
+            throw new ApiNotFoundException(NO_REGISTERED_STUDENTS);
         }
 
         Activity activity = activityService.getActivityById(activityId);
@@ -209,7 +213,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudentByCpfEmailOrPhone(String identifier) {
         return Optional.ofNullable(studentRepository.findByCpfOrEmailOrTelephone(identifier, identifier, identifier))
-                .orElseThrow(() -> new ApiNotFoundException("Estudante não encontrado com o CPF, email ou telefone: " + identifier));
+                .orElseThrow(() -> new ApiNotFoundException(STUDENT_NOT_FOUND_BY_CPF_EMAIL_PHONE + identifier));
     }
 
     @Override
