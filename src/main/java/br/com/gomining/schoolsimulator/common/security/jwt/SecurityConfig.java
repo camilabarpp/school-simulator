@@ -2,30 +2,29 @@ package br.com.gomining.schoolsimulator.common.security.jwt;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.http.HttpMethod.GET;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Bean
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests
-                                .antMatchers(HttpMethod.GET, "/students").permitAll()
-//                                .antMatchers("/students/**").hasRole("ADMIN") // Requer a role "ADMIN"
-                                .antMatchers("/logout").permitAll()
-                                .anyRequest().authenticated()
-                )
-                .formLogin(withDefaults())
-                .build();
-    }
 
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .httpBasic()
+                .and()
+                .authorizeHttpRequests()
+                .antMatchers(GET, "/students/**").permitAll()
+                .antMatchers(GET, "/activities/**").permitAll()
+                .antMatchers(GET, "/grades/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().disable();
+        return http.build();
+    }
 }
 
