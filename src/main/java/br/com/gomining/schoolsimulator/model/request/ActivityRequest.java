@@ -1,6 +1,6 @@
 package br.com.gomining.schoolsimulator.model.request;
 
-import br.com.gomining.schoolsimulator.model.entity.Grade;
+import br.com.gomining.schoolsimulator.model.entity.grade.Grade;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

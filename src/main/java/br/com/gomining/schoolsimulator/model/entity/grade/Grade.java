@@ -1,4 +1,4 @@
-package br.com.gomining.schoolsimulator.model.entity;
+package br.com.gomining.schoolsimulator.model.entity.grade;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

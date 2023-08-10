@@ -1,7 +1,7 @@
 package br.com.gomining.schoolsimulator.service;
 
 import org.junit.jupiter.api.Test;
-import br.com.gomining.schoolsimulator.model.entity.Grade;
+import br.com.gomining.schoolsimulator.model.entity.grade.Grade;
 import br.com.gomining.schoolsimulator.repository.GradeRepository;
 import br.com.gomining.schoolsimulator.service.impl.GradeServiceImpl;
 import org.junit.jupiter.api.extension.ExtendWith;

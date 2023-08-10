@@ -1,7 +1,7 @@
 package br.com.gomining.schoolsimulator.service.impl;
 
 import br.com.gomining.schoolsimulator.common.exception.ApiNotFoundException;
-import br.com.gomining.schoolsimulator.model.entity.Grade;
+import br.com.gomining.schoolsimulator.model.entity.grade.Grade;
 import br.com.gomining.schoolsimulator.repository.GradeRepository;
 import br.com.gomining.schoolsimulator.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;

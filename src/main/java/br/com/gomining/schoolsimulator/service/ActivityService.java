@@ -1,6 +1,6 @@
 package br.com.gomining.schoolsimulator.service;
 
-import br.com.gomining.schoolsimulator.model.entity.Activity;
+import br.com.gomining.schoolsimulator.model.entity.activity.Activity;
 
 import java.util.List;
 

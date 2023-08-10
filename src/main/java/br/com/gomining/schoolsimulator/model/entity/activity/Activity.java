@@ -1,5 +1,6 @@
-package br.com.gomining.schoolsimulator.model.entity;
+package br.com.gomining.schoolsimulator.model.entity.activity;
 
+import br.com.gomining.schoolsimulator.model.entity.grade.Grade;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package br.com.gomining.schoolsimulator.model.mapper;
 
-import br.com.gomining.schoolsimulator.model.entity.Activity;
+import br.com.gomining.schoolsimulator.model.entity.activity.Activity;
 import br.com.gomining.schoolsimulator.model.request.ActivityRequest;
 import br.com.gomining.schoolsimulator.model.response.ActivityResponse;
 import lombok.experimental.UtilityClass;

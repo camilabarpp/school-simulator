@@ -1,7 +1,7 @@
 package br.com.gomining.schoolsimulator.service.impl;
 
 import br.com.gomining.schoolsimulator.common.exception.ApiNotFoundException;
-import br.com.gomining.schoolsimulator.model.entity.Activity;
+import br.com.gomining.schoolsimulator.model.entity.activity.Activity;
 import br.com.gomining.schoolsimulator.repository.ActivityRepository;
 import br.com.gomining.schoolsimulator.service.ActivityService;
 import lombok.AllArgsConstructor;
