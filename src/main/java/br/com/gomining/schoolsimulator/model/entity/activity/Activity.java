@@ -3,10 +3,7 @@ package br.com.gomining.schoolsimulator.model.entity.activity;
 import br.com.gomining.schoolsimulator.model.entity.grade.Grade;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -32,4 +29,11 @@ public class Activity {
     private String lastUpdateDate;
     @ApiModelProperty(notes = "The activity grade")
     private List<Grade> grade;
+
+    public Activity(String id, String title, String questionStatement, List<Grade> listOfGrades) {
+        this.id = id;
+        this.title = title;
+        this.questionStatement = questionStatement;
+        this.grade = listOfGrades;
+    }
 }

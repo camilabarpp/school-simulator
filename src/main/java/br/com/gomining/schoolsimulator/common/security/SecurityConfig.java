@@ -35,7 +35,6 @@ public class SecurityConfig {
                         .antMatchers(GET, "/students/**").permitAll()
                         .antMatchers(GET, "/activities/**").permitAll()
                         .antMatchers(GET, "/grades/**").permitAll()
-//                        .antMatchers(POST, "/students/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

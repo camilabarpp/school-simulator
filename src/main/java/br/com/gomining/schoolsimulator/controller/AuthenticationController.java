@@ -1,14 +1,13 @@
 package br.com.gomining.schoolsimulator.controller;
 
 import br.com.gomining.schoolsimulator.common.exception.EmailAlreadyExistsException;
+import br.com.gomining.schoolsimulator.common.security.TokenService;
 import br.com.gomining.schoolsimulator.model.entity.auth.AuthenticationDTO;
 import br.com.gomining.schoolsimulator.model.entity.auth.LoginResponseDTO;
 import br.com.gomining.schoolsimulator.model.entity.auth.RegisterDTO;
 import br.com.gomining.schoolsimulator.model.entity.user.User;
 import br.com.gomining.schoolsimulator.repository.UserRepository;
-import br.com.gomining.schoolsimulator.common.security.TokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -50,17 +49,4 @@ public class AuthenticationController {
 
         return data; // Retorna o objeto RegisterDTO
     }
-
-//    @PostMapping("/register")
-//    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-//        if(this.repository.findByUsername(data.getUsername()) != null) return ResponseEntity.badRequest().build();
-//
-//        String encryptedPassword = new BCryptPasswordEncoder().encode(data.getPassword());
-//        User newUser = new User(data.getUsername(), encryptedPassword, data.getRole());
-//
-//        this.repository.save(newUser);
-//
-//        return ResponseEntity.ok().build();
-//    }
-
 }

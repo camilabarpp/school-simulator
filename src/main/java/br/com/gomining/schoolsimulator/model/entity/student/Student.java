@@ -37,4 +37,12 @@ public class Student {
     private String lastUpdateDate;
     @ApiModelProperty(notes = "The student activities")
     private List<Activity> activities;
+
+    public Student(String id, String fullName, String cpf, String email, String telephone) {
+        this.id = id;
+        this.fullName = fullName;
+        this.cpf = cpf;
+        this.email = email;
+        this.telephone = telephone;
+    }
 }

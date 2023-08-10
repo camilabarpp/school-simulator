@@ -5,6 +5,7 @@ import br.com.gomining.schoolsimulator.model.request.GradeRequest;
 import br.com.gomining.schoolsimulator.model.response.GradeResponse;
 import br.com.gomining.schoolsimulator.service.impl.GradeServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ public class GradeController {
 
     @PostMapping
     @ResponseStatus(CREATED)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public GradeResponse createGrade(@RequestBody @Valid GradeRequest gradeRequest) {
         return toResponse(gradeService.createGrade(toEntity(gradeRequest)));
     }

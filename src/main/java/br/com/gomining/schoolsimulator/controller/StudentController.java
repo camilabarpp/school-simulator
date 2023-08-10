@@ -61,13 +61,13 @@ public class StudentController {
     }
 
     @PutMapping("/{studentId}/activity/{activityId}")
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public StudentResponse addActivity(@PathVariable String studentId, @PathVariable String activityId) {
         return toResponse(studentService.addActivity(studentId, activityId));
     }
 
     @PutMapping("/{studentId}/activity/{activityId}/grade")
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public StudentResponse addGrade(@PathVariable String studentId, @PathVariable String activityId, @RequestBody @Valid GradeResponse gradeResponse) {
         return toResponse(studentService.addGrade(studentId, activityId, responseToEntity(gradeResponse)));
     }
