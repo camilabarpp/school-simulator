@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RestController
 @RequestMapping("/activities")
 @AllArgsConstructor
-@Tag(name = "Activity Controller")
+@Tag(name = "Activity", description = "Activity Controller")
 public class ActivityController {
     private final ActivityServiceImpl activityService;
 
