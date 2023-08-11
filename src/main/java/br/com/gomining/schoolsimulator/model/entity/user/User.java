@@ -1,9 +1,10 @@
 package br.com.gomining.schoolsimulator.model.entity.user;
 
 import br.com.gomining.schoolsimulator.enun.ERole;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,18 +17,18 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel
+//@ApiModel
 @Document(collection = "Users")
 public class User implements UserDetails {
 
     @Id
-    @ApiModelProperty(notes = "The database generated user ID")
+    @Schema(description = "The database generated user ID")
     private String id;
-    @ApiModelProperty(notes = "The username of the user")
+    @Schema(description = "The username of the user")
     private String username;
-    @ApiModelProperty(notes = "The password of the user")
+    @Schema(description = "The password of the user")
     private String password;
-    @ApiModelProperty(notes = "The roles of the user")
+    @Schema(description = "The roles of the user")
     private ERole role;
 
     public User(String username, String encryptedPassword, ERole role) {

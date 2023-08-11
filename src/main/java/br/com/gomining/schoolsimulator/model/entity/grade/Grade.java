@@ -1,7 +1,6 @@
 package br.com.gomining.schoolsimulator.model.entity.grade;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +12,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel
+//@ApiModel
 @Document(collection = "Grade")
 public class Grade {
     @Id
-    @ApiModelProperty(notes = "The database generated grade ID")
+    @Schema(description = "The database generated grade ID")
     private String id;
-    @ApiModelProperty(notes = "The grade value")
+    @Schema(description = "The grade value")
     private Double gradeValue;
 }

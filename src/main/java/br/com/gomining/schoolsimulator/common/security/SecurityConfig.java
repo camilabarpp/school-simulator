@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(POST, "/auth/login").permitAll()
                         .antMatchers(POST, "/auth/register").permitAll()
+                        .antMatchers(GET, "/swagger-ui/index.html").permitAll()
                         .antMatchers(GET, "/students/**").permitAll()
                         .antMatchers(GET, "/activities/**").permitAll()
                         .antMatchers(GET, "/grades/**").permitAll()

@@ -7,6 +7,8 @@ import br.com.gomining.schoolsimulator.model.entity.auth.LoginResponseDTO;
 import br.com.gomining.schoolsimulator.model.entity.auth.RegisterDTO;
 import br.com.gomining.schoolsimulator.model.entity.user.User;
 import br.com.gomining.schoolsimulator.repository.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,12 +23,14 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("auth")
 @AllArgsConstructor
+@Tag(name = "Authentication", description = "Authentication API")
 public class AuthenticationController {
     private AuthenticationManager authenticationManager;
     private UserRepository repository;
     private TokenService tokenService;
 
     @PostMapping("/login")
+    @Operation(summary = "Login")
     public LoginResponseDTO login(@RequestBody @Valid AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.getUsername(), data.getPassword());
         var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -37,6 +41,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
+    @Operation(summary = "Register")
     public RegisterDTO register(@RequestBody @Valid RegisterDTO data){
         if(this.repository.findByUsername(data.getUsername()) != null) {
             throw new EmailAlreadyExistsException("Email already exists"); // Lança uma exceção personalizada

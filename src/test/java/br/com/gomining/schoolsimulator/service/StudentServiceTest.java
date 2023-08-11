@@ -165,17 +165,10 @@ class StudentServiceTest {
         // Arrange
         String studentId = "1";
         String activityId = "A1";
-        Student student = listOfStudents.get(0);
-        student.setRegistrationDate(LocalDate.now().toString());
-        Activity actualActivity = activity;
-        actualActivity.setRegistrationDate(LocalDate.now().toString());
+        Student student = createSampleStudent();
+        Activity actualActivity = createSampleActivity();
 
-        when(activityService.getActivityById(activityId)).thenReturn(actualActivity);
-        when(studentRepository.save(student)).thenReturn(student);
-
-        // Configurar o comportamento esperado para o getStudentById
-//        when(studentService.getStudentById(studentId)).thenReturn(student);
-        when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
+        mockStudentAndActivityRepositories(studentId, student, activityId, actualActivity);
 
         // Act
         Student result = studentService.addActivity(studentId, activityId);
@@ -189,16 +182,13 @@ class StudentServiceTest {
     void testAddActivity_StudentNotFound() {
         String studentId = "1";
         String activityId = "A1";
-        Student student = listOfStudents.get(0);
-        student.setRegistrationDate(LocalDate.now().toString());
-        Activity actualActivity = activity;
-        actualActivity.setRegistrationDate(LocalDate.now().toString());
+        Activity actualActivity = createSampleActivity();
 
         when(activityService.getActivityById(activityId)).thenReturn(actualActivity);
-
         when(studentRepository.findById(studentId)).thenReturn(Optional.empty());
 
-        var exception = assertThrows(ApiNotFoundException.class, () -> studentService.addActivity(studentId, activityId));
+        var exception = assertThrows(ApiNotFoundException.class,
+                () -> studentService.addActivity(studentId, activityId));
 
         assertEquals(STUDENT_NOT_FOUND_BY_ID + studentId, exception.getMessage());
     }
@@ -208,21 +198,17 @@ class StudentServiceTest {
     void shouldThrowExceptionWhenAddingActivityAlreadyAdded() {
         String studentId = "1";
         String activityId = "A1";
-        Student student = listOfStudents.get(0);
-        student.setRegistrationDate(LocalDate.now().toString());
-        student.setActivities(getActivities());
+        Student student = createSampleStudent();
         Activity actualActivity = activity;
-        actualActivity.setRegistrationDate(LocalDate.now().toString());
 
         when(activityService.getActivityById(activityId)).thenReturn(actualActivity);
-
         when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
 
         var exception = assertThrows(ActivityAlreadyAddedException.class, () -> studentService.addActivity(studentId, activityId));
 
         assertEquals(ACTIVITY_ALREADY_ADDED, exception.getMessage());
     }
-
+//Continuar daqui
     @Test
     @DisplayName("Test adding grade to activity")
     void testAddGrade_Success() {
@@ -255,12 +241,7 @@ class StudentServiceTest {
         String studentId = "1";
         String activityId = "A1";
         Grade gradeToAdd = listOfGrades.get(0);
-
-        Student student = listOfStudents.get(0);
-        student.setActivities(new ArrayList<>());
-
-        Activity actualActivity = activity;
-        actualActivity.setGrade(new ArrayList<>());
+        Student student = createSampleStudent();
 
         when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
         when(gradeService.createGrade(gradeToAdd)).thenReturn(gradeToAdd);
@@ -276,16 +257,15 @@ class StudentServiceTest {
     void testCalculateStudentAverageBasedOnAllActivities() {
         String studentId = "1";
 
+        List<Activity> activities = getActivities();
         Student student = new Student();
         student.setId(studentId);
-        List<Activity> activities = new ArrayList<>();
         Activity activity1 = new Activity();
         activity1.setId("A1");
         activities.add(activity1);
         student.setActivities(activities);
 
         Grade grade1 = listOfGrades.get(0);
-        grade1.setGradeValue(9.5);
         List<Grade> grades = new ArrayList<>();
         grades.add(grade1);
         activity1.setGrade(grades);
@@ -294,7 +274,7 @@ class StudentServiceTest {
 
         Double average = studentService.calculateStudentAverageBasedOnAllActivity(studentId);
 
-        double expectedAverage = grade1.getGradeValue();
+        double expectedAverage = grade1.getGradeValue() / 2;
         assertEquals(expectedAverage, average, 0.001);
     }
 
@@ -589,6 +569,32 @@ class StudentServiceTest {
         assertEquals(STUDENT_NOT_FOUND_BY_CPF_EMAIL_PHONE + identifier, exception.getMessage());
     }
 
+
+    private Student createSampleStudent() {
+        Student student = new Student();
+        student.setId("1");
+        student.setRegistrationDate(LocalDate.now().toString());
+        student.setActivities(getActivities());
+        return student;
+    }
+
+    private Activity createSampleActivity() {
+        Activity activity = new Activity();
+        activity.setId("A1");
+        activity.setRegistrationDate(LocalDate.now().toString());
+        activity.setGrade(listOfGrades);
+        return activity;
+    }
+
+    private void mockStudentAndActivityRepositories(String studentId, Student student, String activityId, Activity activity) {
+        when(activityService.getActivityById(activityId)).thenReturn(activity);
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
+    }
+
+    private void mockStudentRepository(String studentId, Student student) {
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
+    }
+
     private List<Activity> getActivities() {
         List<Activity> activities = new ArrayList<>();
         activities.add(this.activity);
@@ -596,7 +602,7 @@ class StudentServiceTest {
     }
 
     List<Student> listOfStudents = List.of(
-            new Student("1", "João", "12345678901", "joao@mail.com", "123456789", getActivities()),
+            new Student("1", "João", "12345678901", "joao@mail.com", "123456789"),
             new Student("2", "Maria", "12345678902", "maria@mail.com", "123456780")
     );
 

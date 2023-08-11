@@ -3,8 +3,8 @@ package br.com.gomining.schoolsimulator.controller;
 import br.com.gomining.schoolsimulator.model.request.ActivityRequest;
 import br.com.gomining.schoolsimulator.model.response.ActivityResponse;
 import br.com.gomining.schoolsimulator.service.impl.ActivityServiceImpl;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,32 +19,32 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RestController
 @RequestMapping("/activities")
 @AllArgsConstructor
-@Api(value = "Activity")
+@Tag(name = "Activity Controller")
 public class ActivityController {
     private final ActivityServiceImpl activityService;
 
     @GetMapping
-    @ApiOperation(value = "Returns a list of activities")
+    @Operation(summary = "Returns a list of activities")
     public List<ActivityResponse> getAllActivities() {
         return toListResponse(activityService.getAllActivities());
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Returns a single activity")
+    @Operation(summary = "Returns a single activity")
     public ActivityResponse getActivityById(@PathVariable String id) {
         return toResponse(activityService.getActivityById(id));
     }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    @ApiOperation(value = "Creates a new activity")
+    @Operation(summary = "Creates a new activity")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public ActivityResponse createActivity(@RequestBody @Valid ActivityRequest activity) {
         return toResponse(activityService.createActivity(toEntity(activity)));
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Updates an existing activity")
+    @Operation(summary = "Updates an existing activity")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public ActivityResponse updateActivity(@PathVariable String id, @RequestBody @Valid ActivityRequest activity) {
         return toResponse(activityService.updateActivity(id, toEntity(activity)));
@@ -52,7 +52,7 @@ public class ActivityController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    @ApiOperation(value = "Deletes an existing activity")
+    @Operation(summary = "Deletes an existing activity")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteActivity(@PathVariable String id) {
         activityService.deleteActivity(id);
@@ -60,7 +60,7 @@ public class ActivityController {
 
     @DeleteMapping
     @ResponseStatus(NO_CONTENT)
-    @ApiOperation(value = "Deletes all activities")
+    @Operation(summary = "Deletes all activities")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteAllActivities() {
         activityService.deleteAllActivities();
