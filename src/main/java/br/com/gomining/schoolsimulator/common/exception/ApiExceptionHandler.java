@@ -1,6 +1,7 @@
 package br.com.gomining.schoolsimulator.common.exception;
 
 import br.com.gomining.schoolsimulator.common.exception.errorresponse.ErrorResponse;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -45,6 +46,28 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
                 .timestamp(LocalDateTime.now())
                 .message(ex.getMessage())
                 .field(INTERNAL_SERVER_ERROR.name())
+                .parameter(ex.getClass().getSimpleName())
+                .build();
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(FORBIDDEN)
+    public ErrorResponse accessDeniedExceptionHandler(AccessDeniedException ex) {
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .message(ex.getMessage())
+                .field(FORBIDDEN.name())
+                .parameter(ex.getClass().getSimpleName())
+                .build();
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    @ResponseStatus(UNAUTHORIZED)
+    public ErrorResponse tokenInvalidExceptionHandler(InvalidTokenException ex) {
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .message(ex.getMessage())
+                .field(UNAUTHORIZED.name())
                 .parameter(ex.getClass().getSimpleName())
                 .build();
     }

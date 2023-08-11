@@ -228,12 +228,11 @@ class StudentServiceTest {
         when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
         when(gradeService.createGrade(gradeToAdd)).thenReturn(gradeToAdd);
 
-        // Act
         Student result = studentService.addGrade(studentId, activityId, gradeToAdd);
 
-        // Assert
         assertTrue(result.getActivities().get(0).getGrade().contains(gradeToAdd));
     }
+
 
     @Test
     @DisplayName("Test adding grade to non-existent activity")
@@ -254,14 +253,46 @@ class StudentServiceTest {
 
     @Test
     @DisplayName("Test calculating student average based on all activities")
+    void testCalculateActivityAverage() {
+        String studentId = "1";
+        Student student = createSampleStudent();
+
+        List<Activity> activities = new ArrayList<>();
+
+        Activity activity1 = createSampleActivity();
+        List<Grade> grades1 = new ArrayList<>();
+        Grade grade1 = new Grade();
+        grade1.setGradeValue(9.5);
+        grades1.add(grade1);
+        activity1.setGrade(grades1);
+        activities.add(activity1);
+
+        Activity activity2 = createSampleActivity();
+        List<Grade> grades2 = new ArrayList<>();
+        Grade grade2 = new Grade();
+        grade2.setGradeValue(18.0);
+        grades2.add(grade2);
+        activity2.setGrade(grades2);
+        activities.add(activity2);
+        student.setActivities(activities);
+
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
+
+        double average = studentService.calculateStudentAverageBasedOnAllActivity(studentId);
+
+        double expectedAverage = (grade1.getGradeValue() + grade2.getGradeValue()) / 2;
+        assertEquals(expectedAverage, average, 0.001);
+    }
+
+    @Test
+    @DisplayName("Test calculating student average based on all activities")
     void testCalculateStudentAverageBasedOnAllActivities() {
         String studentId = "1";
 
+        Student student = createSampleStudent();
+        Activity activity1 = createSampleActivity();
         List<Activity> activities = getActivities();
-        Student student = new Student();
         student.setId(studentId);
-        Activity activity1 = new Activity();
-        activity1.setId("A1");
         activities.add(activity1);
         student.setActivities(activities);
 
@@ -279,50 +310,17 @@ class StudentServiceTest {
     }
 
     @Test
-    @DisplayName("Test calculating student average based on all activities")
-    void testCalculateActivityAverage() {
-        // Arrange
-        String studentId = "1";
-        Student student = new Student();
-        student.setId(studentId);
-        List<Activity> activities = new ArrayList<>();
-        Activity activity1 = new Activity();
-        List<Grade> grades1 = new ArrayList<>();
-        Grade grade1 = new Grade();
-        grade1.setGradeValue(9.5);
-        grades1.add(grade1);
-        activity1.setGrade(grades1);
-        activities.add(activity1);
-        Activity activity2 = new Activity();
-        List<Grade> grades2 = new ArrayList<>();
-        Grade grade2 = new Grade();
-        grade2.setGradeValue(8.0);
-        grades2.add(grade2);
-        activity2.setGrade(grades2);
-        activities.add(activity2);
-        student.setActivities(activities);
-
-        when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
-
-        // Act
-        double average = studentService.calculateStudentAverageBasedOnAllActivity(studentId);
-
-        // Assert
-        double expectedAverage = (grade1.getGradeValue() + grade2.getGradeValue()) / 2;
-        assertEquals(expectedAverage, average, 0.001);
-    }
-
-    @Test
     @DisplayName("Test calculating activity average with null or empty grades")
     void testCalculateActivityAverage_NullOrEmptyGrades() {
         String studentId = "1";
-        Student student = new Student();
-        student.setId(studentId);
 
-        Activity activity = this.activity;
+        Student student = createSampleStudent();
+        Activity activity = createSampleActivity();
 
-        List<Activity> activities = new ArrayList<>();
+        List<Activity> activities = getActivities();
+        activities.add(activity);
 
+        activity.setGrade(List.of());
         activities.add(activity);
 
         student.setActivities(activities);
@@ -355,10 +353,10 @@ class StudentServiceTest {
         // Arrange
         String studentId = "1";
         String activityId = "1";
-        Student student = listOfStudents.get(0);
+        Student student = createSampleStudent();
         Activity activity = this.activity;
 
-        List<Activity> activities = new ArrayList<>();
+        List<Activity> activities = getActivities();
         activities.add(activity);
 
         student.setActivities(activities);
@@ -380,19 +378,14 @@ class StudentServiceTest {
         // Arrange
         String studentId = "1";
         String activityId = "A1";
-        Student student = new Student();
-        student.setId(studentId);
 
-        Activity activity = new Activity();
-        activity.setId(activityId);
-        activity.setGrade(null);
+        Student student = createSampleStudent();
+        Activity activity = createSampleActivity();
 
+        List<Activity> activities = getActivities();
+        activities.add(activity);
 
-        List<Activity> activities = new ArrayList<>();
-        Activity studentActivity = new Activity();
-        studentActivity.setId(activityId);
-        activities.add(studentActivity);
-
+        activity.setGrade(new ArrayList<>());
         student.setActivities(activities);
 
         when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));

@@ -1,9 +1,9 @@
 package br.com.gomining.schoolsimulator.common.security;
 
+import br.com.gomining.schoolsimulator.common.exception.InvalidTokenException;
 import br.com.gomining.schoolsimulator.repository.UserRepository;
 import io.jsonwebtoken.io.IOException;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,17 +26,20 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoverToken(request);
         if(token != null){
             var username = tokenService.validateToken(token);
+
             UserDetails user = userRepository.findByUsername(String.valueOf(username));
 
             if (user != null) {
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                throw new AuthenticationServiceException("Token inválido");
+                throw new InvalidTokenException("Token inválido");
             }
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else {
+            throw new InvalidTokenException("Token não encontrado");
         }
         filterChain.doFilter(request, response);
     }

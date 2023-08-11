@@ -1,6 +1,8 @@
 package br.com.gomining.schoolsimulator.model.request;
 
 import br.com.gomining.schoolsimulator.model.entity.grade.Grade;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +11,8 @@ import java.util.List;
 
 @NoArgsConstructor
 @Getter
+@Builder
+@AllArgsConstructor
 public class ActivityRequest {
     @NotBlank(message = "title is mandatory")
     private String title;

@@ -34,9 +34,7 @@ public class SecurityConfig {
                         .antMatchers(POST, "/auth/register").permitAll()
                         .antMatchers("/v3/api-docs/**",
                          "/swagger-ui/**").permitAll()
-                        .antMatchers(GET, "/students/**").permitAll()
-                        .antMatchers(GET, "/activities/**").permitAll()
-                        .antMatchers(GET, "/grades/**").permitAll()
+                        .antMatchers(GET, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
