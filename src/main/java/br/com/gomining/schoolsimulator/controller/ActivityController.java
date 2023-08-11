@@ -6,6 +6,7 @@ import br.com.gomining.schoolsimulator.service.impl.ActivityServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,12 +38,14 @@ public class ActivityController {
     @PostMapping
     @ResponseStatus(CREATED)
     @ApiOperation(value = "Creates a new activity")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public ActivityResponse createActivity(@RequestBody @Valid ActivityRequest activity) {
         return toResponse(activityService.createActivity(toEntity(activity)));
     }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Updates an existing activity")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public ActivityResponse updateActivity(@PathVariable String id, @RequestBody @Valid ActivityRequest activity) {
         return toResponse(activityService.updateActivity(id, toEntity(activity)));
     }
@@ -50,6 +53,7 @@ public class ActivityController {
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
     @ApiOperation(value = "Deletes an existing activity")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteActivity(@PathVariable String id) {
         activityService.deleteActivity(id);
     }
@@ -57,6 +61,7 @@ public class ActivityController {
     @DeleteMapping
     @ResponseStatus(NO_CONTENT)
     @ApiOperation(value = "Deletes all activities")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteAllActivities() {
         activityService.deleteAllActivities();
     }

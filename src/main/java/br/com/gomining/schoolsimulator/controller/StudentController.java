@@ -35,13 +35,13 @@ public class StudentController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public StudentResponse createStudent(@RequestBody @Valid StudentRequest student) {
         return toResponse(studentService.createStudent(toEntity(student)));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public StudentResponse updateStudent(@PathVariable String id, @RequestBody @Valid StudentRequest student) {
         return toResponse(studentService.updateStudent(id, toEntity(student)));
     }
@@ -61,13 +61,13 @@ public class StudentController {
     }
 
     @PutMapping("/{studentId}/activity/{activityId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public StudentResponse addActivity(@PathVariable String studentId, @PathVariable String activityId) {
         return toResponse(studentService.addActivity(studentId, activityId));
     }
 
     @PutMapping("/{studentId}/activity/{activityId}/grade")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public StudentResponse addGrade(@PathVariable String studentId, @PathVariable String activityId, @RequestBody @Valid GradeResponse gradeResponse) {
         return toResponse(studentService.addGrade(studentId, activityId, responseToEntity(gradeResponse)));
     }

@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,7 +70,8 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student addActivity(String studentId, String activityId) {
         var activity = activityService.getActivityById(activityId);
-        var student = this.getStudentById(studentId);
+        var student = studentRepository.findById(studentId).orElseThrow(
+                () -> new ApiNotFoundException(STUDENT_NOT_FOUND_BY_ID + studentId));
 
         if (!student.getActivities().contains(activity)) {
             student.getActivities().add(activity);
@@ -97,9 +97,6 @@ public class StudentServiceImpl implements StudentService {
             Activity targetedActivity = optionalActivity.get();
 
             List<Grade> activityGrades = targetedActivity.getGrade();
-            if (activityGrades == null) {
-                activityGrades = new ArrayList<>();
-            }
 
             activityGrades.add(newGrade);
 
@@ -147,22 +144,18 @@ public class StudentServiceImpl implements StudentService {
         Student student = this.getStudentById(studentId);
         Activity activity = activityService.getActivityById(activityId);
 
+        if (activity.getGrade() == null || activity.getGrade().isEmpty()) {
+            throw new ApiNotFoundException(STUDENT_WITHOUT_GRADES_IN_ACTIVITY);
+        }
+
         List<Grade> grades = student.getActivities().stream()
                 .filter(studentActivity -> studentActivity.getId().equals(activity.getId()))
                 .flatMap(studentActivity -> studentActivity.getGrade().stream())
                 .collect(Collectors.toList());
 
-        if (grades.isEmpty()) {
-            throw new ApiNotFoundException(ACTIVITY_WITHOUT_GRADES);
-        }
-
         List<Grade> studentGradesInActivity = grades.stream()
                 .filter(grade -> studentHasGrade(student, grade))
                 .collect(Collectors.toList());
-
-        if (studentGradesInActivity.isEmpty()) {
-            throw new ApiNotFoundException(STUDENT_WITHOUT_GRADES_IN_ACTIVITY);
-        }
 
         double totalGradeValue = studentGradesInActivity.stream()
                 .mapToDouble(Grade::getGradeValue)

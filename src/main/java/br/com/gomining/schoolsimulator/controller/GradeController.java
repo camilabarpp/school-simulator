@@ -14,6 +14,7 @@ import java.util.List;
 import static br.com.gomining.schoolsimulator.model.mapper.GradeMapper.toEntity;
 import static br.com.gomining.schoolsimulator.model.mapper.GradeMapper.toResponse;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/grades")
@@ -39,16 +40,21 @@ public class GradeController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public GradeResponse updateGrade(@PathVariable String id, @RequestBody @Valid GradeRequest grade) {
         return toResponse(gradeService.updateGrade(id, toEntity(grade)));
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(NO_CONTENT)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public void deleteGrade(@PathVariable String id) {
         gradeService.deleteGrade(id);
     }
 
     @DeleteMapping
+    @ResponseStatus(NO_CONTENT)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public void deleteAllGrades() {
         gradeService.deleteAllGrades();
     }
