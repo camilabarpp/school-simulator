@@ -7,10 +7,10 @@
 ![Mockito](https://img.shields.io/badge/Mockito-blue)
 # School Simulator
 
-O School Simulator é um projeto que visa simular operações escolares, 
-desde o gerenciamento de 
-atividades até o registro de alunos. Esta aplicação foi 
-desenvolvida usando a tecnologia Spring Boot 2.6.1, oferecendo uma estrutura 
+O School Simulator é um projeto que visa simular operações escolares,
+desde o gerenciamento de
+atividades até o registro de alunos. Esta aplicação foi
+desenvolvida usando a tecnologia Spring Boot 2.6.1, oferecendo uma estrutura
 robusta para construir uma aplicação Java de forma eficiente.
 
 ## Funcionalidades Principais
@@ -39,9 +39,7 @@ robusta para construir uma aplicação Java de forma eficiente.
 ## Configuração do Ambiente
 
 - Clone este repositório.
-- Configure as credenciais do MongoDB no arquivo de configuração.
-- Execute o aplicativo usando o Maven ou sua IDE preferida.
-- Após abrir o projeto na sua IDE, execute os seguintes comandos no terminal:
+- Execute o aplicativo usando o IntelliJ IDEA ou sua IDE preferida.
 
 ## Instalação
 
@@ -50,14 +48,14 @@ robusta para construir uma aplicação Java de forma eficiente.
 git clone https://github.com/camilabarpp/school-simulator.git
 ```
 2. Acesse o diretório: `school-simulator`
-3. Configure o arquivo `application.properties` com as credenciais do MongoDB.
+3. Após abrir o projeto na sua IDE, execute os seguintes comandos no terminal:
 4. Construa e empacote o projeto: `mvn clean install`
-4. Execute o aplicativo: `mvn spring-boot:run`
+5. Execute o aplicativo: `mvn spring-boot:run`
 
 ## Como Usar
 
 1. [Acesse a API no navegador:](http://localhost:8080/api/v1/swagger-ui/index.html#/)
-2. Autentique-se usando a rota `/auth/login` ou 
+2. Autentique-se usando a rota `/auth/login` ou
 3. Se registre usando a rota: `/auth/register`.
 4. Sugestão de usuário para **Registro**:
 ```bash
@@ -72,11 +70,11 @@ git clone https://github.com/camilabarpp/school-simulator.git
 
 ## Testes
 
-1. Execute os testes automatizados para garantir a integridade do código: 
+1. Execute os testes automatizados para garantir a integridade do código:
 ```bash
 mvn test
 ```
-2. Execute os testes de cobertura com o jacoco: 
+2. Execute os testes de cobertura com o jacoco:
 ```bash
  mvn clean test jacoco:report
 ```
