@@ -3,6 +3,7 @@ package br.com.gomining.schoolsimulator.common.exception;
 import br.com.gomining.schoolsimulator.common.exception.errorresponse.ErrorResponse;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -84,6 +85,17 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
                 .build();
     }
 
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    @ResponseStatus(UNAUTHORIZED)
+    public ErrorResponse internalAuthenticationServiceExceptionHandler(InternalAuthenticationServiceException ex) {
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .message("Usuario ou senha invalidos")
+                .field(UNAUTHORIZED.name())
+                .parameter(ex.getClass().getSimpleName())
+                .build();
+    }
+
     @ExceptionHandler(AuthenticationServiceException.class)
     @ResponseStatus(UNAUTHORIZED)
     public ErrorResponse authenticationServiceExceptionHandler(AuthenticationServiceException ex) {
@@ -101,6 +113,17 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
         return ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .message(Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage())
+                .field(BAD_REQUEST.name())
+                .parameter(ex.getClass().getSimpleName())
+                .build();
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    @ResponseStatus(BAD_REQUEST)
+    public ErrorResponse emailAlreadyExistsExceptionHandler(EmailAlreadyExistsException ex) {
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .message(ex.getMessage())
                 .field(BAD_REQUEST.name())
                 .parameter(ex.getClass().getSimpleName())
                 .build();

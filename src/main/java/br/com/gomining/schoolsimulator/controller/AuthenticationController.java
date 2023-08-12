@@ -52,6 +52,6 @@ public class AuthenticationController {
 
         this.repository.save(newUser);
 
-        return data; // Retorna o objeto RegisterDTO
+        return data;
     }
 }
