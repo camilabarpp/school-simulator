@@ -100,9 +100,26 @@ class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Should throws MethodArgumentNotValidException when try to register a new user with invalid password")
+    void shouldThrowsMethodArgumentNotValidExceptionWhenToTryRegisterANewUserWithInvalidPassword() throws Exception {
+        RegisterDTO registerDTO = new RegisterDTO("admin", "StrongPassword@1", ERole.ADMIN);
+
+        MvcResult result = mvc.perform(post("/auth/register")
+                        .contentType("application/json")
+                        .content(mapper.writeValueAsString(registerDTO)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String json = result.getResponse().getContentAsString();
+
+        assertThat(json).contains("admin");
+    }
+
+    @Test
     @DisplayName("Should register a new user")
     void shouldRegisterANewUser() throws Exception {
-        RegisterDTO registerDTO = new RegisterDTO("admin", "admin", ERole.ADMIN);
+        RegisterDTO registerDTO = new RegisterDTO("admin", "Pass@word123", ERole.ADMIN);
 
         MvcResult result = mvc.perform(post("/auth/register")
                         .contentType("application/json")
@@ -131,9 +148,9 @@ class AuthenticationControllerTest {
 
         String json = result.getResponse().getContentAsString();
 
-        assertThat(json).contains("Email already exists");
+        assertThat(json).contains("A senha nÃ£o atende aos critÃ©rios de seguranÃ§a.");
         assertThat(json).contains("BAD_REQUEST");
-        assertThat(json).contains("EmailAlreadyExistsException");
+        assertThat(json).contains("MethodArgumentNotValidException");
     }
 
 }

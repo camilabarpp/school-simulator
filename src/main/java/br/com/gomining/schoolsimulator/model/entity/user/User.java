@@ -17,7 +17,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@ApiModel
 @Document(collection = "Users")
 public class User implements UserDetails {
 
