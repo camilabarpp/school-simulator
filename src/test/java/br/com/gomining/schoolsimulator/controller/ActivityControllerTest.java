@@ -1,6 +1,7 @@
 package br.com.gomining.schoolsimulator.controller;
 
 import br.com.gomining.schoolsimulator.model.entity.activity.Activity;
+import br.com.gomining.schoolsimulator.model.mapper.ActivityMapper;
 import br.com.gomining.schoolsimulator.model.request.ActivityRequest;
 import br.com.gomining.schoolsimulator.model.response.ActivityResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -63,7 +64,7 @@ class ActivityControllerTest {
 
         String json = result.getResponse().getContentAsString();
 
-        List<Activity> returnedActivities = mapper.readValue(json, new TypeReference<List<Activity>>() {});
+        Activity[] returnedActivities = mapper.readValue(json, Activity[].class);
 
         for (Activity activity : returnedActivities) {
             assertThat(activity.getTitle()).isIn("Activity 1", "Activity 2");
@@ -159,7 +160,7 @@ class ActivityControllerTest {
                         .contentType("application/json")
                         .content(mapper.writeValueAsString(activityRequest)))
                 .andDo(print())
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isBadRequest())
                 .andReturn();
 
         String json = result.getResponse().getContentAsString();
@@ -180,7 +181,7 @@ class ActivityControllerTest {
                         .contentType("application/json")
                         .content(mapper.writeValueAsString(activityRequest)))
                 .andDo(print())
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isBadRequest())
                 .andReturn();
 
         String json = result.getResponse().getContentAsString();
@@ -213,10 +214,7 @@ class ActivityControllerTest {
 
         mongoTemplate.insert(activity);
 
-        ActivityRequest activityRequest = ActivityRequest.builder()
-                .title("Activity 2")
-                .questionStatement("Question 2")
-                .build();
+        ActivityRequest activityRequest = ActivityMapper.toRequest(activity());
 
         MvcResult result = mvc.perform(put("/activities/" + id)
                         .contentType("application/json")
@@ -234,7 +232,7 @@ class ActivityControllerTest {
         assertNotNull(updatedActivity.getId());
         assertEquals(activityRequest.getTitle(), updatedActivity.getTitle());
         assertNotNull(activitiesInDatabase);
-        assertThat(activitiesInDatabase.getTitle()).isEqualTo("Activity 2");
+        assertThat(activitiesInDatabase.getTitle()).isEqualTo("Activity 1");
     }
 
     @Test
@@ -333,13 +331,13 @@ class ActivityControllerTest {
         mvc.perform(delete("/activities/230")
                         .contentType("application/json"))
                 .andDo(print())
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isForbidden())
                 .andReturn();
     }
 
     @Test
     @DisplayName("Should delete all activities")
-    @WithMockUser(roles = {"TEACHER"})
+    @WithMockUser(roles = {"ADMIN"})
     void shouldDeleteAllActivities() throws Exception {
         Activity activity = activity();
         activity.setId("64d19e8c56ffc02f87a603c5");
@@ -362,8 +360,8 @@ class ActivityControllerTest {
     }
 
     @Test
-    @DisplayName("Should deny access when user is not ADMIN or TEACHER")
-    void shouldThrowExceptionWhenUserIsNotAdminOrTeacherOnDeleteAll() throws Exception {
+    @DisplayName("Should deny access when user is not ADMIN")
+    void shouldThrowExceptionWhenUserIsNotAdminOnDeleteAll() throws Exception {
         mvc.perform(delete("/activities")
                         .contentType("application/json"))
                 .andDo(print())
@@ -372,6 +370,7 @@ class ActivityControllerTest {
     }
 
     List<Activity> listOfActivities = Arrays.asList(
+            activity(),
             Activity.builder()
                     .title("Activity 1")
                     .questionStatement("Question 1")
@@ -387,10 +386,4 @@ class ActivityControllerTest {
                 .questionStatement("Question 1")
                 .build();
     }
-
-    ActivityResponse activityResponse = ActivityResponse.builder()
-            .id("1")
-            .title("Teste")
-            .questionStatement("Teste")
-            .build();
 }

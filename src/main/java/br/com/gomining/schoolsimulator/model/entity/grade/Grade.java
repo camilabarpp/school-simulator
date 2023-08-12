@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@ApiModel
 @Document(collection = "Grade")
 public class Grade {
     @Id

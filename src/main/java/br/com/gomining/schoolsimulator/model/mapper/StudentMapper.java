@@ -39,4 +39,15 @@ public class StudentMapper {
                 .map(StudentMapper::toResponse)
                 .collect(Collectors.toList());
     }
+
+    public static StudentRequest toRequest(Student student) {
+        return StudentRequest.builder()
+                .fullName(student.getFullName())
+                .cpf(student.getCpf())
+                .email(student.getEmail())
+                .telephone(student.getTelephone())
+                .registrationDate(student.getRegistrationDate())
+                .lastUpdateDate(student.getLastUpdateDate())
+                .build();
+    }
 }

@@ -8,6 +8,7 @@ class SchoolSimulatorApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }

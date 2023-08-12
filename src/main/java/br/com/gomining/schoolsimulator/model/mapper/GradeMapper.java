@@ -16,6 +16,12 @@ public class GradeMapper {
                 .build();
     }
 
+    public static GradeRequest toRequest(Grade grade) {
+        return GradeRequest.builder()
+                .gradeValue(grade.getGradeValue())
+                .build();
+    }
+
     public static GradeResponse toResponse(Grade grade) {
         return GradeResponse.builder()
                 .id(grade.getId())

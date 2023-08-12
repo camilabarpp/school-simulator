@@ -15,7 +15,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@ApiModel
 @Document(collection = "Student")
 public class Student {
     @Id
@@ -42,14 +41,5 @@ public class Student {
         this.cpf = cpf;
         this.email = email;
         this.telephone = telephone;
-    }
-
-    public Student(String id, String fullName, String cpf, String email, String telephone, List<Activity> activities) {
-        this.id = id;
-        this.fullName = fullName;
-        this.cpf = cpf;
-        this.email = email;
-        this.telephone = telephone;
-        this.activities = activities;
     }
 }

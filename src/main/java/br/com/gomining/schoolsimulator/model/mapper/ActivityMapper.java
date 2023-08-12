@@ -20,6 +20,16 @@ public class ActivityMapper {
                 .build();
     }
 
+    public static ActivityRequest toRequest(Activity activity) {
+        return ActivityRequest.builder()
+                .title(activity.getTitle())
+                .questionStatement(activity.getQuestionStatement())
+                .registrationDate(activity.getRegistrationDate())
+                .lastUpdateDate(activity.getLastUpdateDate())
+                .grade(activity.getGrade())
+                .build();
+    }
+
     public static ActivityResponse toResponse(Activity activity) {
         return ActivityResponse.builder()
                 .id(activity.getId())
